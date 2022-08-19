@@ -18,7 +18,7 @@ class MyApp extends StatelessWidget {
       title: 'Junes',
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: const Home(),
+      home: Home(),
     );
   }
 }
