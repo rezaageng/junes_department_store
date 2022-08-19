@@ -1,5 +1,8 @@
 import 'package:flutter/material.dart';
+
 import 'screens/home.dart';
+import 'themes/dark_theme.dart';
+import 'themes/light_theme.dart';
 
 void main() {
   runApp(const MyApp());
@@ -11,10 +14,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
       title: 'Junes',
-      theme: ThemeData(
-        primarySwatch: Colors.blue,
-      ),
+      theme: lightTheme,
+      darkTheme: darkTheme,
       home: const Home(),
     );
   }
