@@ -63,6 +63,7 @@ class Home extends StatelessWidget {
         itemBuilder: ((context, index) => ProductItem(
               title: products[index].title,
               image: products[index].image,
+              price: products[index].price,
             )),
       ),
     );

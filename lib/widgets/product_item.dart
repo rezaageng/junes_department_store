@@ -3,8 +3,10 @@ import 'package:flutter/material.dart';
 class ProductItem extends StatelessWidget {
   final String title;
   final String image;
+  final double price;
 
-  const ProductItem({Key? key, required this.title, required this.image})
+  const ProductItem(
+      {Key? key, required this.title, required this.image, required this.price})
       : super(key: key);
 
   @override
@@ -35,6 +37,10 @@ class ProductItem extends StatelessWidget {
           title: Text(
             title,
             textAlign: TextAlign.center,
+          ),
+          subtitle: Text(
+            '\$${price.toStringAsFixed(0)}',
+            // textAlign: TextAlign.center,
           ),
         ),
         child: Container(
