@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/screens/product_details.dart';
 
 import 'navigations/bottom_nav.dart';
 import 'themes/dark_theme.dart';
@@ -20,6 +21,7 @@ class MyApp extends StatelessWidget {
       darkTheme: darkTheme,
       routes: {
         '/': (context) => const BottomNav(),
+        ProductDetails.routeName: (context) => const ProductDetails(),
       },
     );
   }
