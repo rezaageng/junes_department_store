@@ -14,7 +14,7 @@ class _BottomNavState extends State<BottomNav> {
   final List<Map<String, Object>> _screens = [
     {
       'title': 'Junes',
-      'screen': Home(),
+      'screen': const Home(),
     },
     {
       'title': 'Orders',
