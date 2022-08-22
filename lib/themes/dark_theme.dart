@@ -23,4 +23,7 @@ ThemeData darkTheme = ThemeData(
     caption: TextStyle(height: 1.5),
     subtitle2: TextStyle(color: Colors.white70),
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedIconTheme: IconThemeData(color: Colors.orange),
+  ),
 );

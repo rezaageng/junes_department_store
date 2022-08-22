@@ -27,4 +27,7 @@ ThemeData lightTheme = ThemeData(
     selectionColor: Colors.orange,
     selectionHandleColor: Colors.orange,
   ),
+  bottomNavigationBarTheme: const BottomNavigationBarThemeData(
+    selectedIconTheme: IconThemeData(color: Colors.orange),
+  ),
 );
