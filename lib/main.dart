@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 
-import 'screens/home.dart';
+import 'navigations/bottom_nav.dart';
 import 'themes/dark_theme.dart';
 import 'themes/light_theme.dart';
 
@@ -18,7 +18,9 @@ class MyApp extends StatelessWidget {
       title: 'Junes',
       theme: lightTheme,
       darkTheme: darkTheme,
-      home: Home(),
+      routes: {
+        '/': (context) => const BottomNav(),
+      },
     );
   }
 }

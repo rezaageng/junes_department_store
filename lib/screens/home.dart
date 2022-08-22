@@ -46,26 +46,21 @@ class Home extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: const Text('Junes'),
+    return GridView.builder(
+      padding: const EdgeInsets.all(16),
+      physics: const BouncingScrollPhysics(),
+      gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+        crossAxisCount: 2,
+        childAspectRatio: 2 / 3,
+        crossAxisSpacing: 16,
+        mainAxisSpacing: 16,
       ),
-      body: GridView.builder(
-        padding: const EdgeInsets.all(16),
-        physics: const BouncingScrollPhysics(),
-        gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-          crossAxisCount: 2,
-          childAspectRatio: 2 / 3,
-          crossAxisSpacing: 16,
-          mainAxisSpacing: 16,
-        ),
-        itemCount: products.length,
-        itemBuilder: ((context, index) => ProductItem(
-              title: products[index].title,
-              image: products[index].image,
-              price: products[index].price,
-            )),
-      ),
+      itemCount: products.length,
+      itemBuilder: ((context, index) => ProductItem(
+            title: products[index].title,
+            image: products[index].image,
+            price: products[index].price,
+          )),
     );
   }
 }

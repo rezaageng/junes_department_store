@@ -1,3 +1,9 @@
 {
-  "conventionalCommits.scopes": ["app", "models", "theme", "home"]
+  "conventionalCommits.scopes": [
+    "app",
+    "models",
+    "theme",
+    "home",
+    "navigations"
+  ]
 }
