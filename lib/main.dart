@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/screens/product_details.dart';
 
 import 'navigations/bottom_nav.dart';
+import 'screens/product_details.dart';
 import 'themes/dark_theme.dart';
 import 'themes/light_theme.dart';
 
