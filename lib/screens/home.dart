@@ -21,8 +21,8 @@ class Home extends StatelessWidget {
         mainAxisSpacing: 16,
       ),
       itemCount: products.length,
-      itemBuilder: ((context, index) => ChangeNotifierProvider(
-            create: (context) => products[index],
+      itemBuilder: ((context, index) => ChangeNotifierProvider.value(
+            value: products[index],
             child: const ProductItem(),
           )),
     );
