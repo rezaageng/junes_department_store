@@ -3,12 +3,17 @@ import 'package:flutter/material.dart';
 import '../screens/product_details.dart';
 
 class ProductItem extends StatelessWidget {
+  final String id;
   final String title;
   final String image;
   final double price;
 
   const ProductItem(
-      {Key? key, required this.title, required this.image, required this.price})
+      {Key? key,
+      required this.id,
+      required this.title,
+      required this.image,
+      required this.price})
       : super(key: key);
 
   @override
@@ -17,8 +22,8 @@ class ProductItem extends StatelessWidget {
       borderRadius: BorderRadius.circular(16),
       child: Material(
         child: GestureDetector(
-          onTap: () =>
-              Navigator.of(context).pushNamed(ProductDetails.routeName),
+          onTap: () => Navigator.of(context)
+              .pushNamed(ProductDetails.routeName, arguments: id),
           child: GridTile(
             header: Material(
               color: Colors.transparent,
