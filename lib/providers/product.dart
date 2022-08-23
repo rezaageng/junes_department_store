@@ -18,7 +18,7 @@ class Product with ChangeNotifier {
   });
 
   void toggleFavorite() {
-    isFavorite == !isFavorite;
+    isFavorite = !isFavorite;
     notifyListeners();
   }
 }
