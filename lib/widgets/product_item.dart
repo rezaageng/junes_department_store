@@ -9,7 +9,7 @@ class ProductItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final Product product = Provider.of<Product>(context);
+    final Product product = Provider.of<Product>(context, listen: false);
 
     return ClipRRect(
       borderRadius: BorderRadius.circular(16),
@@ -23,16 +23,18 @@ class ProductItem extends StatelessWidget {
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  IconButton(
-                    enableFeedback: false,
-                    splashRadius: 24,
-                    icon: Icon(
-                      product.isFavorite
-                          ? Icons.favorite_rounded
-                          : Icons.favorite_outline_rounded,
+                  Consumer<Product>(
+                    builder: (context, value, child) => IconButton(
+                      enableFeedback: false,
+                      splashRadius: 24,
+                      icon: Icon(
+                        product.isFavorite
+                            ? Icons.favorite_rounded
+                            : Icons.favorite_outline_rounded,
+                      ),
+                      color: Colors.white,
+                      onPressed: product.toggleFavorite,
                     ),
-                    color: Colors.white,
-                    onPressed: product.toggleFavorite,
                   ),
                   IconButton(
                     enableFeedback: false,
