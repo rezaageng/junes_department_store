@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
-import '../providers/cart.dart';
+import '../providers/cart.dart' show Cart;
+import '../widgets/cart_item.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -16,32 +17,49 @@ class CartScreen extends StatelessWidget {
       appBar: AppBar(
         title: const Text('Cart'),
       ),
-      body: Card(
-        margin: const EdgeInsets.all(16),
-        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
-        elevation: 0,
-        child: Padding(
-          padding: const EdgeInsets.all(16),
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceBetween,
-            children: [
-              const Text('Total Amount:'),
-              const Spacer(),
-              Chip(
-                label: Text(
-                  '\$${cart.totalAmount}',
-                  style: const TextStyle(color: Colors.white),
-                ),
-                backgroundColor: Colors.green,
+      body: Column(
+        children: [
+          Card(
+            margin: const EdgeInsets.all(16),
+            shape:
+                RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+            elevation: 0,
+            child: Padding(
+              padding: const EdgeInsets.all(16),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  const Text('Total Amount:'),
+                  const Spacer(),
+                  Chip(
+                    label: Text(
+                      '\$${cart.totalAmount}',
+                      style: const TextStyle(color: Colors.white),
+                    ),
+                    backgroundColor: Colors.green,
+                  ),
+                  IconButton(
+                    onPressed: () {},
+                    splashRadius: 20,
+                    icon: const Icon(Icons.shopping_cart_checkout_rounded),
+                  )
+                ],
               ),
-              IconButton(
-                onPressed: () {},
-                splashRadius: 20,
-                icon: const Icon(Icons.shopping_cart_checkout_rounded),
-              )
-            ],
+            ),
           ),
-        ),
+          Expanded(
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: cart.itemsCount,
+              itemBuilder: (context, index) => CartItem(
+                id: cart.items.values.toList()[index].productId,
+                title: cart.items.values.toList()[index].title,
+                quantity: cart.items.values.toList()[index].quantity,
+                price: cart.items.values.toList()[index].price,
+              ),
+            ),
+          )
+        ],
       ),
     );
   }
