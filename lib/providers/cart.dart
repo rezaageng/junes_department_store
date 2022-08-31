@@ -1,12 +1,12 @@
 import 'package:flutter/foundation.dart';
 
-class ChartItem {
+class CartItem {
   String productId;
   String title;
   int quantity;
   double price;
 
-  ChartItem({
+  CartItem({
     required this.productId,
     required this.title,
     required this.quantity,
@@ -14,10 +14,10 @@ class ChartItem {
   });
 }
 
-class Chart with ChangeNotifier {
-  late Map<String, ChartItem> _items;
+class Cart with ChangeNotifier {
+  late Map<String, CartItem> _items;
 
-  Map<String, ChartItem> get items {
+  Map<String, CartItem> get items {
     return {..._items};
   }
 
@@ -25,7 +25,7 @@ class Chart with ChangeNotifier {
     if (_items.containsKey(productId)) {
       _items.update(
         productId,
-        (value) => ChartItem(
+        (value) => CartItem(
           productId: value.productId,
           title: value.title,
           quantity: value.quantity + 1,
@@ -35,7 +35,7 @@ class Chart with ChangeNotifier {
     } else {
       _items.putIfAbsent(
         productId,
-        () => ChartItem(
+        () => CartItem(
           productId: DateTime.now().toString(),
           title: title,
           quantity: 1,
