@@ -1,4 +1,7 @@
+import 'package:badges/badges.dart';
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/providers/cart.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/home.dart';
 import '../screens/orders.dart';
@@ -29,6 +32,23 @@ class _BottomNavState extends State<BottomNav> {
     return Scaffold(
       appBar: AppBar(
         title: const Text('Junes'),
+        actions: [
+          Consumer<Cart>(
+            builder: (context, cart, child) => Badge(
+              position: BadgePosition.topEnd(top: 0, end: 3),
+              showBadge: cart.itemsCount > 0 ? true : false,
+              badgeContent: Text(cart.itemsCount.toString()),
+              badgeColor: Theme.of(context).colorScheme.secondary,
+              animationType: BadgeAnimationType.slide,
+              child: child,
+            ),
+            child: IconButton(
+              onPressed: () {},
+              icon: const Icon(Icons.shopping_cart_rounded),
+              enableFeedback: false,
+            ),
+          )
+        ],
       ),
       body: _screens[_screenIndex]['screen'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
