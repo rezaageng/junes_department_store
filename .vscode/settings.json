@@ -6,6 +6,8 @@
     "home",
     "navigations",
     "product details",
-    "providers"
+    "providers",
+    "cart",
+    "config"
   ]
 }
