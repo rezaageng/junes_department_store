@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/providers/cart.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/cart.dart';
 import '../providers/product.dart';
 import '../screens/product_details.dart';
 
