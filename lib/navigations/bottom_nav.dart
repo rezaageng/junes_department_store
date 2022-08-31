@@ -38,7 +38,10 @@ class _BottomNavState extends State<BottomNav> {
             builder: (context, cart, child) => Badge(
               position: BadgePosition.topEnd(top: 0, end: 3),
               showBadge: cart.itemsCount > 0 ? true : false,
-              badgeContent: Text(cart.itemsCount.toString()),
+              badgeContent: Text(
+                cart.itemsCount.toString(),
+                style: const TextStyle(color: Colors.white),
+              ),
               badgeColor: Theme.of(context).colorScheme.secondary,
               animationType: BadgeAnimationType.slide,
               child: child,

@@ -18,6 +18,8 @@ class CartScreen extends StatelessWidget {
       ),
       body: Card(
         margin: const EdgeInsets.all(16),
+        shape: RoundedRectangleBorder(borderRadius: BorderRadius.circular(16)),
+        elevation: 0,
         child: Padding(
           padding: const EdgeInsets.all(16),
           child: Row(
@@ -26,7 +28,10 @@ class CartScreen extends StatelessWidget {
               const Text('Total Amount:'),
               const Spacer(),
               Chip(
-                label: Text('\$${cart.totalAmount}'),
+                label: Text(
+                  '\$${cart.totalAmount}',
+                  style: const TextStyle(color: Colors.white),
+                ),
                 backgroundColor: Colors.green,
               ),
               IconButton(
