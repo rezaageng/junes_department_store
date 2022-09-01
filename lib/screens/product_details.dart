@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/providers/cart.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/cart.dart';
 import '../providers/product.dart';
 import '../providers/products.dart';
+import '../widgets/cart_button.dart';
 
 class ProductDetails extends StatelessWidget {
   static const routeName = '/product-details';
@@ -21,6 +22,7 @@ class ProductDetails extends StatelessWidget {
     return Scaffold(
       appBar: AppBar(
         title: Text(product.title),
+        actions: const [CartButton()],
       ),
       body: Center(
         child: Column(
