@@ -26,4 +26,16 @@ ThemeData darkTheme = ThemeData(
   bottomNavigationBarTheme: const BottomNavigationBarThemeData(
     selectedIconTheme: IconThemeData(color: Colors.orange),
   ),
+  elevatedButtonTheme: ElevatedButtonThemeData(
+    style: ButtonStyle(
+      shape: MaterialStateProperty.all(
+        RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(16),
+        ),
+      ),
+      padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
+      backgroundColor: MaterialStateProperty.all(Colors.green),
+      foregroundColor: MaterialStateProperty.all(Colors.white),
+    ),
+  ),
 );
