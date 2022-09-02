@@ -21,6 +21,11 @@ class ProductDetails extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          enableFeedback: false,
+          icon: const Icon(Icons.arrow_back_rounded),
+        ),
         title: Text(product.title),
         actions: const [CartButton()],
       ),

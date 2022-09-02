@@ -17,6 +17,11 @@ class CartScreen extends StatelessWidget {
 
     return Scaffold(
       appBar: AppBar(
+        leading: IconButton(
+          onPressed: () => Navigator.pop(context),
+          enableFeedback: false,
+          icon: const Icon(Icons.arrow_back_rounded),
+        ),
         title: const Text('Cart'),
       ),
       body: Column(
@@ -43,9 +48,12 @@ class CartScreen extends StatelessWidget {
                   IconButton(
                     onPressed: () {
                       order.addOrder(
-                          cart.items.values.toList(), cart.totalAmount);
+                        cart.items.values.toList(),
+                        cart.totalAmount,
+                      );
                       cart.clear();
                     },
+                    enableFeedback: false,
                     splashRadius: 20,
                     icon: const Icon(Icons.shopping_cart_checkout_rounded),
                   )
