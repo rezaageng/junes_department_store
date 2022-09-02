@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/providers/orders.dart';
 import 'package:provider/provider.dart';
 
 import 'navigations/bottom_nav.dart';
@@ -26,6 +27,9 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Cart(),
         ),
+        ChangeNotifierProvider(
+          create: (context) => Orders(),
+        )
       ],
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
