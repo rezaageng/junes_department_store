@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../screens/home.dart';
-import '../screens/orders.dart';
+import '../screens/orders_screen.dart';
 import '../widgets/cart_button.dart';
 
 class BottomNav extends StatefulWidget {
@@ -19,7 +19,7 @@ class _BottomNavState extends State<BottomNav> {
     },
     {
       'title': 'Orders',
-      'screen': const Orders(),
+      'screen': const OrdersScreen(),
     },
   ];
 
