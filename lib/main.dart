@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/screens/user_products.dart';
 import 'package:provider/provider.dart';
 
 import 'navigations/bottom_nav.dart';
@@ -40,6 +41,7 @@ class MyApp extends StatelessWidget {
           '/': (context) => const BottomNav(),
           ProductDetails.routeName: (context) => const ProductDetails(),
           CartScreen.routeName: (context) => const CartScreen(),
+          UserProducts.routeName: (context) => const UserProducts(),
         },
       ),
     );

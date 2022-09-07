@@ -3,6 +3,7 @@ import 'package:flutter/material.dart';
 import '../screens/home.dart';
 import '../screens/orders_screen.dart';
 import '../widgets/cart_button.dart';
+import 'app_drawer.dart';
 
 class BottomNav extends StatefulWidget {
   const BottomNav({Key? key}) : super(key: key);
@@ -29,9 +30,17 @@ class _BottomNavState extends State<BottomNav> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
+        leading: Builder(
+          builder: (context) => IconButton(
+            icon: const Icon(Icons.menu_rounded),
+            onPressed: () => Scaffold.of(context).openDrawer(),
+            enableFeedback: false,
+          ),
+        ),
         title: Text(_screens[_screenIndex]['title'] as String),
         actions: const [CartButton()],
       ),
+      drawer: const AppDrawer(),
       body: _screens[_screenIndex]['screen'] as Widget,
       bottomNavigationBar: BottomNavigationBar(
         currentIndex: _screenIndex,
