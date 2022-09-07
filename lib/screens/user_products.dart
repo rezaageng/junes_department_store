@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/providers/products.dart';
-import 'package:junes_department_store/widgets/user_product_item.dart';
 import 'package:provider/provider.dart';
+
+import '../providers/products.dart';
+import '../widgets/user_product_item.dart';
 
 class UserProducts extends StatelessWidget {
   static const String routeName = '/user-products';
