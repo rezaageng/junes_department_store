@@ -1,8 +1,14 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/screens/user_products.dart';
+
+import '../screens/user_products.dart';
 
 class AppDrawer extends StatelessWidget {
   const AppDrawer({Key? key}) : super(key: key);
+
+  void _navigate(BuildContext context, String route) {
+    Navigator.of(context).pushNamed(route);
+    Scaffold.of(context).closeDrawer();
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -21,8 +27,7 @@ class AppDrawer extends StatelessWidget {
             ),
           ),
           ListTile(
-            onTap: () =>
-                Navigator.of(context).pushNamed(UserProducts.routeName),
+            onTap: () => _navigate(context, UserProducts.routeName),
             enableFeedback: false,
             leading: const Icon(Icons.store_rounded),
             title: const Text('Manage Your Products'),
