@@ -30,7 +30,7 @@ class ProductItem extends StatelessWidget {
                       enableFeedback: false,
                       splashRadius: 24,
                       icon: Icon(
-                        product.isFavorite
+                        value.isFavorite
                             ? Icons.favorite_rounded
                             : Icons.favorite_outline_rounded,
                       ),
