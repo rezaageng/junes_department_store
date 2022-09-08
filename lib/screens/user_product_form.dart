@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 
+import '../providers/product.dart';
+
 class UserProductForm extends StatefulWidget {
   static const String routeName = '/user-product-form';
 
@@ -11,6 +13,16 @@ class UserProductForm extends StatefulWidget {
 
 class _UserProductFormState extends State<UserProductForm> {
   final _imageUrlController = TextEditingController();
+  final _formKey = GlobalKey<FormState>();
+  Product _product = Product(
+    id: '',
+    title: '',
+    description: '',
+    price: 0,
+    image: '',
+  );
+
+  void _saveForm() => _formKey.currentState!.save();
 
   @override
   Widget build(BuildContext context) {
@@ -26,10 +38,20 @@ class _UserProductFormState extends State<UserProductForm> {
       body: Padding(
         padding: const EdgeInsets.all(16),
         child: Form(
+          key: _formKey,
           child: ListView(
             physics: const BouncingScrollPhysics(),
             children: [
               TextFormField(
+                onSaved: (value) {
+                  _product = Product(
+                    id: _product.id,
+                    title: value!,
+                    description: _product.description,
+                    price: _product.price,
+                    image: _product.image,
+                  );
+                },
                 decoration: InputDecoration(
                   hintText: 'Title',
                   filled: true,
@@ -44,6 +66,15 @@ class _UserProductFormState extends State<UserProductForm> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                onSaved: (value) {
+                  _product = Product(
+                    id: _product.id,
+                    title: _product.title,
+                    description: _product.description,
+                    price: double.parse(value!),
+                    image: _product.image,
+                  );
+                },
                 decoration: InputDecoration(
                   hintText: 'Price',
                   filled: true,
@@ -59,6 +90,15 @@ class _UserProductFormState extends State<UserProductForm> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                onSaved: (value) {
+                  _product = Product(
+                    id: _product.id,
+                    title: _product.title,
+                    description: value!,
+                    price: _product.price,
+                    image: _product.image,
+                  );
+                },
                 decoration: InputDecoration(
                   hintText: 'Description',
                   filled: true,
@@ -97,6 +137,15 @@ class _UserProductFormState extends State<UserProductForm> {
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextFormField(
+                      onSaved: (value) {
+                        _product = Product(
+                          id: _product.id,
+                          title: _product.title,
+                          description: _product.description,
+                          price: _product.price,
+                          image: value!,
+                        );
+                      },
                       controller: _imageUrlController,
                       keyboardType: TextInputType.url,
                       onEditingComplete: () => setState(() {}),
@@ -113,6 +162,13 @@ class _UserProductFormState extends State<UserProductForm> {
                     ),
                   ),
                 ],
+              ),
+              Container(
+                margin: const EdgeInsets.only(top: 16),
+                child: ElevatedButton(
+                  onPressed: _saveForm,
+                  child: const Text('Save'),
+                ),
               )
             ],
           ),
