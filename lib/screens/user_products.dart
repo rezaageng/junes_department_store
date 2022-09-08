@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/screens/user_product_form.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
@@ -31,6 +32,15 @@ class UserProducts extends StatelessWidget {
               image: products.items[index].image,
             ),
           ),
+        ),
+      ),
+      floatingActionButton: FloatingActionButton(
+        onPressed: () =>
+            Navigator.of(context).pushNamed(UserProductForm.routeName),
+        enableFeedback: false,
+        child: const Icon(
+          Icons.add_rounded,
+          color: Colors.white,
         ),
       ),
     );
