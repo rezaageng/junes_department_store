@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
+import '../providers/products.dart';
 
 class UserProductForm extends StatefulWidget {
   static const String routeName = '/user-product-form';
@@ -22,16 +24,20 @@ class _UserProductFormState extends State<UserProductForm> {
     image: '',
   );
 
-  void _saveForm() {
-    final isValid = _formKey.currentState!.validate();
-    if (!isValid) return;
-    _formKey.currentState!.save();
-  }
-
   final RegExp regex = RegExp(
     r"(https?|ftp)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
     caseSensitive: false,
   );
+
+  void _saveForm() {
+    final isValid = _formKey.currentState!.validate();
+
+    if (!isValid) return;
+
+    _formKey.currentState!.save();
+    Provider.of<Products>(context, listen: false).addProduct(_product);
+    Navigator.pop(context);
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -45,7 +51,7 @@ class _UserProductFormState extends State<UserProductForm> {
         title: const Text('Manage Product'),
       ),
       body: Padding(
-        padding: const EdgeInsets.all(16),
+        padding: const EdgeInsets.fromLTRB(16, 16, 16, 0),
         child: Form(
           key: _formKey,
           child: ListView(
