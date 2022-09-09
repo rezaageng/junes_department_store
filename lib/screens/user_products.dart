@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/screens/user_product_form.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
 import '../widgets/user_product_item.dart';
+import 'user_product_form.dart';
 
 class UserProducts extends StatelessWidget {
   static const String routeName = '/user-products';
