@@ -22,7 +22,16 @@ class _UserProductFormState extends State<UserProductForm> {
     image: '',
   );
 
-  void _saveForm() => _formKey.currentState!.save();
+  void _saveForm() {
+    final isValid = _formKey.currentState!.validate();
+    if (!isValid) return;
+    _formKey.currentState!.save();
+  }
+
+  final RegExp regex = RegExp(
+    r"(https?|ftp)://([-A-Z0-9.]+)(/[-A-Z0-9+&@#/%=~_|!:,.;]*)?(\?[A-Z0-9+&@#/%=~_|!:‌​,.;]*)?",
+    caseSensitive: false,
+  );
 
   @override
   Widget build(BuildContext context) {
@@ -52,6 +61,10 @@ class _UserProductFormState extends State<UserProductForm> {
                     image: _product.image,
                   );
                 },
+                validator: (value) {
+                  if (value!.isEmpty) return 'Title is empty';
+                  return null;
+                },
                 decoration: InputDecoration(
                   hintText: 'Title',
                   filled: true,
@@ -66,6 +79,14 @@ class _UserProductFormState extends State<UserProductForm> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) return 'Price is empty';
+                  if (double.tryParse(value) == null) return 'Invalid value';
+                  if (double.parse(value) < 0) {
+                    return 'Price must be greater than or equal to 0';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _product = Product(
                     id: _product.id,
@@ -90,6 +111,13 @@ class _UserProductFormState extends State<UserProductForm> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                validator: (value) {
+                  if (value!.isEmpty) return 'Description is empty';
+                  if (value.length < 20) {
+                    return 'Description must be more than 10 characters';
+                  }
+                  return null;
+                },
                 onSaved: (value) {
                   _product = Product(
                     id: _product.id,
@@ -123,20 +151,53 @@ class _UserProductFormState extends State<UserProductForm> {
                       borderRadius: BorderRadius.circular(16),
                     ),
                     child: _imageUrlController.text.isEmpty
-                        ? const Center(
-                            child: Text('No Image'),
+                        ? Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            crossAxisAlignment: CrossAxisAlignment.center,
+                            children: [
+                              const Icon(
+                                Icons.image_rounded,
+                                size: 64,
+                                color: Colors.white54,
+                              ),
+                              Text(
+                                'No image',
+                                style: Theme.of(context).textTheme.caption,
+                              )
+                            ],
                           )
                         : ClipRRect(
                             borderRadius: BorderRadius.circular(16),
                             child: Image.network(
                               _imageUrlController.text,
                               fit: BoxFit.cover,
+                              errorBuilder: (context, error, stackTrace) =>
+                                  Column(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                crossAxisAlignment: CrossAxisAlignment.center,
+                                children: [
+                                  const Icon(
+                                    Icons.broken_image_rounded,
+                                    size: 64,
+                                    color: Colors.white54,
+                                  ),
+                                  Text(
+                                    'Image error',
+                                    style: Theme.of(context).textTheme.caption,
+                                  )
+                                ],
+                              ),
                             ),
                           ),
                   ),
                   const SizedBox(width: 8),
                   Expanded(
                     child: TextFormField(
+                      validator: (value) {
+                        if (value!.isEmpty) return 'Image url is empty';
+                        if (!regex.hasMatch(value)) return 'Invalid url';
+                        return null;
+                      },
                       onSaved: (value) {
                         _product = Product(
                           id: _product.id,
@@ -148,7 +209,7 @@ class _UserProductFormState extends State<UserProductForm> {
                       },
                       controller: _imageUrlController,
                       keyboardType: TextInputType.url,
-                      onEditingComplete: () => setState(() {}),
+                      onChanged: (_) => setState(() {}),
                       decoration: InputDecoration(
                         hintText: 'Image Url',
                         filled: true,
