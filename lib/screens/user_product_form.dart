@@ -29,13 +29,32 @@ class _UserProductFormState extends State<UserProductForm> {
     caseSensitive: false,
   );
 
+  bool _isInit = true;
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final productId = ModalRoute.of(context)?.settings.arguments as String?;
+    if (_isInit && productId != null) {
+      _product = Provider.of<Products>(context).findById(productId);
+      _imageUrlController.text = _product.image;
+    }
+    _isInit = false;
+  }
+
   void _saveForm() {
     final isValid = _formKey.currentState!.validate();
 
     if (!isValid) return;
 
     _formKey.currentState!.save();
-    Provider.of<Products>(context, listen: false).addProduct(_product);
+    if (_product.id.isNotEmpty) {
+      Provider.of<Products>(context, listen: false)
+          .updateProduct(_product.id, _product);
+    } else {
+      Provider.of<Products>(context, listen: false).addProduct(_product);
+    }
+
     Navigator.pop(context);
   }
 
@@ -58,6 +77,11 @@ class _UserProductFormState extends State<UserProductForm> {
             physics: const BouncingScrollPhysics(),
             children: [
               TextFormField(
+                initialValue: _product.title,
+                validator: (value) {
+                  if (value!.isEmpty) return 'Title is empty';
+                  return null;
+                },
                 onSaved: (value) {
                   _product = Product(
                     id: _product.id,
@@ -65,11 +89,8 @@ class _UserProductFormState extends State<UserProductForm> {
                     description: _product.description,
                     price: _product.price,
                     image: _product.image,
+                    isFavorite: _product.isFavorite,
                   );
-                },
-                validator: (value) {
-                  if (value!.isEmpty) return 'Title is empty';
-                  return null;
                 },
                 decoration: InputDecoration(
                   hintText: 'Title',
@@ -85,6 +106,8 @@ class _UserProductFormState extends State<UserProductForm> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                initialValue:
+                    _product.price <= 0 ? '' : _product.price.toString(),
                 validator: (value) {
                   if (value!.isEmpty) return 'Price is empty';
                   if (double.tryParse(value) == null) return 'Invalid value';
@@ -100,6 +123,7 @@ class _UserProductFormState extends State<UserProductForm> {
                     description: _product.description,
                     price: double.parse(value!),
                     image: _product.image,
+                    isFavorite: _product.isFavorite,
                   );
                 },
                 decoration: InputDecoration(
@@ -117,6 +141,7 @@ class _UserProductFormState extends State<UserProductForm> {
               ),
               const SizedBox(height: 16),
               TextFormField(
+                initialValue: _product.description,
                 validator: (value) {
                   if (value!.isEmpty) return 'Description is empty';
                   if (value.length < 20) {
@@ -131,6 +156,7 @@ class _UserProductFormState extends State<UserProductForm> {
                     description: value!,
                     price: _product.price,
                     image: _product.image,
+                    isFavorite: _product.isFavorite,
                   );
                 },
                 decoration: InputDecoration(
@@ -211,6 +237,7 @@ class _UserProductFormState extends State<UserProductForm> {
                           description: _product.description,
                           price: _product.price,
                           image: value!,
+                          isFavorite: _product.isFavorite,
                         );
                       },
                       controller: _imageUrlController,

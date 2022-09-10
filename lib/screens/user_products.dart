@@ -28,6 +28,7 @@ class UserProducts extends StatelessWidget {
             physics: const BouncingScrollPhysics(),
             itemCount: products.items.length,
             itemBuilder: (context, index) => UserProductItem(
+              id: products.items[index].id,
               title: products.items[index].title,
               image: products.items[index].image,
             ),

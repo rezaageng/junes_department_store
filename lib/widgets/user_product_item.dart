@@ -1,11 +1,15 @@
 import 'package:flutter/material.dart';
 
+import '../screens/user_product_form.dart';
+
 class UserProductItem extends StatelessWidget {
+  final String id;
   final String title;
   final String image;
 
   const UserProductItem({
     Key? key,
+    required this.id,
     required this.title,
     required this.image,
   }) : super(key: key);
@@ -22,7 +26,7 @@ class UserProductItem extends StatelessWidget {
       child: ListTile(
         contentPadding: EdgeInsets.zero,
         leading: ClipRRect(
-          borderRadius: BorderRadius.circular(12),
+          borderRadius: BorderRadius.circular(8),
           child: AspectRatio(
             aspectRatio: 1,
             child: Image.network(
@@ -37,11 +41,14 @@ class UserProductItem extends StatelessWidget {
           child: Row(
             children: [
               IconButton(
-                onPressed: () {},
+                onPressed: () => Navigator.of(context)
+                    .pushNamed(UserProductForm.routeName, arguments: id),
+                enableFeedback: false,
                 icon: const Icon(Icons.edit_rounded),
               ),
               IconButton(
                 onPressed: () {},
+                enableFeedback: false,
                 icon: const Icon(Icons.delete_rounded),
                 color: Theme.of(context).colorScheme.error,
               )
