@@ -1,4 +1,7 @@
+import 'dart:convert';
+
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 import 'product.dart';
 
@@ -49,6 +52,22 @@ class Products with ChangeNotifier {
   Product findById(id) => _items.firstWhere((item) => item.id == id);
 
   void addProduct(Product product) {
+    final url = Uri.https(
+      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products.json',
+    );
+
+    http.post(
+      url,
+      body: json.encode({
+        'title': product.title,
+        'price': product.price,
+        'description': product.description,
+        'image': product.image,
+        'isFavorite': product.isFavorite,
+      }),
+    );
+
     final newProduct = Product(
       id: DateTime.now().toString(),
       title: product.title,
