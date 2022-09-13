@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
+import '../utilities/on_refresh.dart';
 import '../widgets/nothing_here.dart';
 import '../widgets/user_product_item.dart';
 import 'user_product_form.dart';
@@ -10,29 +11,6 @@ class UserProducts extends StatelessWidget {
   static const String routeName = '/user-products';
 
   const UserProducts({Key? key}) : super(key: key);
-
-  Future<void> _onRefresh(BuildContext context) async {
-    try {
-      await Provider.of<Products>(context, listen: false).fetchProduct();
-    } catch (e) {
-      await showDialog(
-        context: context,
-        builder: (context) => AlertDialog(
-          title: const Text('Error'),
-          content: const Text('Something went wrong'),
-          actions: [
-            TextButton(
-              onPressed: () => Navigator.pop(context),
-              child: Text(
-                'OK',
-                style: Theme.of(context).textTheme.bodyMedium,
-              ),
-            )
-          ],
-        ),
-      );
-    }
-  }
 
   @override
   Widget build(BuildContext context) {
@@ -46,7 +24,7 @@ class UserProducts extends StatelessWidget {
         title: const Text('User Products'),
       ),
       body: RefreshIndicator(
-        onRefresh: () => _onRefresh(context),
+        onRefresh: () => onRefresh(context),
         color: Theme.of(context).colorScheme.secondary,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),

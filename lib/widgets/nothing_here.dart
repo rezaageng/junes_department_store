@@ -5,8 +5,15 @@ class NothingHere extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return const Center(
-      child: Text('Nothing here 😔'),
+    return const CustomScrollView(
+      physics: BouncingScrollPhysics(parent: AlwaysScrollableScrollPhysics()),
+      slivers: [
+        SliverFillRemaining(
+          child: Center(
+            child: Text('Nothing here 😔'),
+          ),
+        )
+      ],
     );
   }
 }
