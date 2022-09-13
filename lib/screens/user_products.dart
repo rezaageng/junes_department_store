@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/products.dart';
+import '../widgets/nothing_here.dart';
 import '../widgets/user_product_item.dart';
 import 'user_product_form.dart';
 
@@ -50,14 +51,16 @@ class UserProducts extends StatelessWidget {
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
           child: Consumer<Products>(
-            builder: (context, products, child) => ListView.builder(
-              itemCount: products.items.length,
-              itemBuilder: (context, index) => UserProductItem(
-                id: products.items[index].id,
-                title: products.items[index].title,
-                image: products.items[index].image,
-              ),
-            ),
+            builder: (context, products, child) => products.items.isEmpty
+                ? const NothingHere()
+                : ListView.builder(
+                    itemCount: products.items.length,
+                    itemBuilder: (context, index) => UserProductItem(
+                      id: products.items[index].id,
+                      title: products.items[index].title,
+                      image: products.items[index].image,
+                    ),
+                  ),
           ),
         ),
       ),

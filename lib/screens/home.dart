@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
 import '../providers/products.dart';
+import '../widgets/nothing_here.dart';
 import '../widgets/filter.dart';
 import '../widgets/product_item.dart';
 
@@ -94,9 +95,7 @@ class _HomeState extends State<Home> {
               ),
               Expanded(
                 child: filteredProducts.isEmpty
-                    ? const Center(
-                        child: Text('Nothing here :('),
-                      )
+                    ? const NothingHere()
                     : GridView.builder(
                         padding: const EdgeInsets.all(16),
                         physics: const BouncingScrollPhysics(),
