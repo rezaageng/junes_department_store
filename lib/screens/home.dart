@@ -3,8 +3,9 @@ import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
 import '../providers/products.dart';
-import '../widgets/nothing_here.dart';
+import '../utilities/on_refresh.dart';
 import '../widgets/filter.dart';
+import '../widgets/nothing_here.dart';
 import '../widgets/product_item.dart';
 
 enum FilterOptions {
@@ -94,25 +95,31 @@ class _HomeState extends State<Home> {
                 ),
               ),
               Expanded(
-                child: filteredProducts.isEmpty
-                    ? const NothingHere()
-                    : GridView.builder(
-                        padding: const EdgeInsets.all(16),
-                        physics: const BouncingScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                          crossAxisCount: 2,
-                          childAspectRatio: 2 / 3,
-                          crossAxisSpacing: 16,
-                          mainAxisSpacing: 16,
+                child: RefreshIndicator(
+                  onRefresh: () => onRefresh(context),
+                  color: Theme.of(context).colorScheme.secondary,
+                  child: filteredProducts.isEmpty
+                      ? const NothingHere()
+                      : GridView.builder(
+                          padding: const EdgeInsets.all(16),
+                          physics: const BouncingScrollPhysics(
+                            parent: AlwaysScrollableScrollPhysics(),
+                          ),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                            crossAxisCount: 2,
+                            childAspectRatio: 2 / 3,
+                            crossAxisSpacing: 16,
+                            mainAxisSpacing: 16,
+                          ),
+                          itemCount: filteredProducts.length,
+                          itemBuilder: ((context, index) =>
+                              ChangeNotifierProvider.value(
+                                value: filteredProducts[index],
+                                child: const ProductItem(),
+                              )),
                         ),
-                        itemCount: filteredProducts.length,
-                        itemBuilder: ((context, index) =>
-                            ChangeNotifierProvider.value(
-                              value: filteredProducts[index],
-                              child: const ProductItem(),
-                            )),
-                      ),
+                ),
               ),
             ],
           );
