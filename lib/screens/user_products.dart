@@ -54,6 +54,8 @@ class UserProducts extends StatelessWidget {
             builder: (context, products, child) => products.items.isEmpty
                 ? const NothingHere()
                 : ListView.builder(
+                    physics: const BouncingScrollPhysics(
+                        parent: AlwaysScrollableScrollPhysics()),
                     itemCount: products.items.length,
                     itemBuilder: (context, index) => UserProductItem(
                       id: products.items[index].id,
