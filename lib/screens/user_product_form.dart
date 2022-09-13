@@ -3,6 +3,7 @@ import 'package:provider/provider.dart';
 
 import '../providers/product.dart';
 import '../providers/products.dart';
+import '../utilities/show_dialog.dart';
 
 class UserProductForm extends StatefulWidget {
   static const String routeName = '/user-product-form';
@@ -53,41 +54,22 @@ class _UserProductFormState extends State<UserProductForm> {
     });
 
     _formKey.currentState!.save();
-    if (_product.id.isNotEmpty) {
-      Provider.of<Products>(context, listen: false)
-          .updateProduct(_product.id, _product);
 
+    try {
+      if (_product.id.isNotEmpty) {
+        await Provider.of<Products>(context, listen: false)
+            .updateProduct(_product.id, _product);
+      } else {
+        await Provider.of<Products>(context, listen: false)
+            .addProduct(_product);
+      }
+    } catch (e) {
+      await showAlert(context);
+    } finally {
       setState(() {
         _isLoading = false;
       });
       Navigator.pop(context);
-    } else {
-      try {
-        await Provider.of<Products>(context, listen: false)
-            .addProduct(_product);
-      } catch (e) {
-        await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Something went wrong'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'OK',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              )
-            ],
-          ),
-        );
-      } finally {
-        setState(() {
-          _isLoading = false;
-        });
-        Navigator.pop(context);
-      }
     }
   }
 

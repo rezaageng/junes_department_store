@@ -53,13 +53,15 @@ class Products with ChangeNotifier {
     try {
       final response = await http.post(
         url,
-        body: json.encode({
-          'title': product.title,
-          'price': product.price,
-          'description': product.description,
-          'image': product.image,
-          'isFavorite': product.isFavorite,
-        }),
+        body: json.encode(
+          {
+            'title': product.title,
+            'price': product.price,
+            'description': product.description,
+            'image': product.image,
+            'isFavorite': product.isFavorite,
+          },
+        ),
       );
 
       final newProduct = Product(
@@ -77,8 +79,23 @@ class Products with ChangeNotifier {
     }
   }
 
-  void updateProduct(String id, Product product) {
+  Future<void> updateProduct(String id, Product product) async {
+    final url = Uri.https(
+      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products/$id.json',
+    );
     final index = _items.indexWhere((prod) => prod.id == id);
+
+    await http.patch(
+      url,
+      body: jsonEncode({
+        'title': product.title,
+        'price': product.price,
+        'description': product.description,
+        'image': product.image
+      }),
+    );
+
     _items[index] = product;
     notifyListeners();
   }
