@@ -32,14 +32,33 @@ class _HomeState extends State<Home> {
   void didChangeDependencies() async {
     super.didChangeDependencies();
     if (_isInit) {
-      setState(() {
-        _isLoading = true;
-      });
-      await Provider.of<Products>(context).fetchProduct();
-      setState(() {
-        _isLoading = false;
-      });
+      try {
+        setState(() {
+          _isLoading = true;
+        });
+        await Provider.of<Products>(context).fetchProduct();
+      } catch (e) {
+        await showDialog(
+          context: context,
+          builder: (context) => AlertDialog(
+            title: const Text('Error'),
+            content: const Text('Something went wrong'),
+            actions: [
+              TextButton(
+                onPressed: () => Navigator.pop(context),
+                child: Text(
+                  'OK',
+                  style: Theme.of(context).textTheme.bodyMedium,
+                ),
+              )
+            ],
+          ),
+        );
+      }
     }
+    setState(() {
+      _isLoading = false;
+    });
     _isInit = false;
   }
 
