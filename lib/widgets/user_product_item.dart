@@ -16,6 +16,20 @@ class UserProductItem extends StatelessWidget {
     required this.image,
   }) : super(key: key);
 
+  Future<void> _delete(BuildContext context) async {
+    ScaffoldMessengerState scaffold = ScaffoldMessenger.of(context);
+
+    try {
+      await Provider.of<Products>(context, listen: false).deleteProduct(id);
+    } catch (e) {
+      scaffold.showSnackBar(
+        SnackBar(
+          content: Text(e.toString()),
+        ),
+      );
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -49,8 +63,7 @@ class UserProductItem extends StatelessWidget {
                 icon: const Icon(Icons.edit_rounded),
               ),
               IconButton(
-                onPressed: () => Provider.of<Products>(context, listen: false)
-                    .deleteProduct(id),
+                onPressed: () => _delete(context),
                 enableFeedback: false,
                 icon: const Icon(Icons.delete_rounded),
                 color: Theme.of(context).colorScheme.error,
