@@ -43,4 +43,7 @@ ThemeData lightTheme = ThemeData(
       foregroundColor: MaterialStateProperty.all(Colors.white),
     ),
   ),
+  progressIndicatorTheme: const ProgressIndicatorThemeData(
+    color: Colors.black,
+  ),
 );
