@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/product.dart';
 import '../providers/products.dart';
 import '../utilities/on_refresh.dart';
+import '../utilities/show_dialog.dart';
 import '../widgets/filter.dart';
 import '../widgets/nothing_here.dart';
 import '../widgets/product_item.dart';
@@ -40,22 +41,7 @@ class _HomeState extends State<Home> {
         });
         await Provider.of<Products>(context).fetchProduct();
       } catch (e) {
-        await showDialog(
-          context: context,
-          builder: (context) => AlertDialog(
-            title: const Text('Error'),
-            content: const Text('Something went wrong'),
-            actions: [
-              TextButton(
-                onPressed: () => Navigator.pop(context),
-                child: Text(
-                  'OK',
-                  style: Theme.of(context).textTheme.bodyMedium,
-                ),
-              )
-            ],
-          ),
-        );
+        await showAlert(context);
       }
     }
     setState(() {
