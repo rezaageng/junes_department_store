@@ -4,6 +4,7 @@ import 'package:provider/provider.dart';
 import '../providers/cart.dart' show Cart;
 import '../providers/orders.dart';
 import '../widgets/cart_item.dart';
+import '../widgets/order_button.dart';
 
 class CartScreen extends StatelessWidget {
   static const routeName = '/cart';
@@ -45,18 +46,7 @@ class CartScreen extends StatelessWidget {
                     ),
                     backgroundColor: Colors.green,
                   ),
-                  IconButton(
-                    onPressed: () {
-                      order.addOrder(
-                        cart.items.values.toList(),
-                        cart.totalAmount,
-                      );
-                      cart.clear();
-                    },
-                    enableFeedback: false,
-                    splashRadius: 20,
-                    icon: const Icon(Icons.shopping_cart_checkout_rounded),
-                  )
+                  OrderButton(cart: cart, order: order)
                 ],
               ),
             ),
