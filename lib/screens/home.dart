@@ -52,7 +52,7 @@ class _HomeState extends State<Home> {
 
   @override
   Widget build(BuildContext context) {
-    final Products products = Provider.of<Products>(context);
+    final Products products = Provider.of<Products>(context, listen: false);
     final List<Product> filteredProducts =
         _showProducts == FilterOptions.favorite
             ? products.favoriteProduct
@@ -82,7 +82,10 @@ class _HomeState extends State<Home> {
               ),
               Expanded(
                 child: RefreshIndicator(
-                  onRefresh: () => onRefresh(context),
+                  onRefresh: () => onRefresh(
+                    context,
+                    () => products.fetchProduct(),
+                  ),
                   color: Theme.of(context).colorScheme.secondary,
                   child: filteredProducts.isEmpty
                       ? const NothingHere()

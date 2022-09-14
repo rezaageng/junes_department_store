@@ -24,7 +24,10 @@ class UserProducts extends StatelessWidget {
         title: const Text('User Products'),
       ),
       body: RefreshIndicator(
-        onRefresh: () => onRefresh(context),
+        onRefresh: () => onRefresh(
+          context,
+          () => Provider.of<Products>(context, listen: false).fetchProduct(),
+        ),
         color: Theme.of(context).colorScheme.secondary,
         child: Padding(
           padding: const EdgeInsets.symmetric(vertical: 8),
