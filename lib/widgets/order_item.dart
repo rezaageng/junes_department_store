@@ -50,16 +50,16 @@ class _OrderItemState extends State<OrderItem> {
           ),
           if (isExpand)
             SizedBox(
-              height: min(widget.order.product.length * 20, 240),
+              height: min(widget.order.products.length * 20, 240),
               child: ListView.builder(
                 physics: const BouncingScrollPhysics(),
-                itemCount: widget.order.product.length,
+                itemCount: widget.order.products.length,
                 itemBuilder: (context, index) => Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Text(widget.order.product[index].title),
+                    Text(widget.order.products[index].title),
                     Text(
-                      '${widget.order.product[index].price} x ${widget.order.product[index].quantity}',
+                      '${widget.order.products[index].price} x ${widget.order.products[index].quantity}',
                     )
                   ],
                 ),
