@@ -1,4 +1,9 @@
+import 'dart:convert';
+
 import 'package:flutter/foundation.dart';
+import 'package:http/http.dart' as http;
+
+import '../models/http_exception.dart';
 
 class Product with ChangeNotifier {
   final String id;
@@ -17,8 +22,33 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  void toggleFavorite() {
+  Future<void> toggleFavorite() async {
+    final url = Uri.https(
+      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/products/$id.json',
+    );
+    final oldStatus = isFavorite;
+
     isFavorite = !isFavorite;
     notifyListeners();
+
+    try {
+      final response = await http.patch(
+        url,
+        body: jsonEncode({
+          'isFavorite': isFavorite,
+        }),
+      );
+
+      if (response.statusCode >= 400) {
+        isFavorite = oldStatus;
+        notifyListeners();
+        throw HttpException('Favorite Failed');
+      }
+    } catch (e) {
+      isFavorite = oldStatus;
+      notifyListeners();
+      rethrow;
+    }
   }
 }
