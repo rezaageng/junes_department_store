@@ -20,10 +20,50 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
-  final List<Order> _orders = [];
+  List<Order> _orders = [];
 
   List<Order> get orders {
     return [..._orders];
+  }
+
+  Future<void> fetchOrders() async {
+    final url = Uri.https(
+      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
+      '/orders.json',
+    );
+
+    try {
+      final response = await http.get(url);
+      final List<Order> loadedOrders = [];
+      final orders = jsonDecode(response.body) as Map<String, dynamic>?;
+
+      if (orders == null) return;
+
+      orders.forEach((orderId, order) {
+        loadedOrders.add(
+          Order(
+            id: orderId,
+            amount: order['amount'],
+            date: DateTime.parse(order['date']),
+            products: (order['products'] as List<dynamic>)
+                .map(
+                  (item) => CartItem(
+                    id: item['id'],
+                    title: item['title'],
+                    quantity: item['quantity'],
+                    price: item['price'],
+                  ),
+                )
+                .toList(),
+          ),
+        );
+      });
+
+      _orders = loadedOrders.reversed.toList();
+      notifyListeners();
+    } catch (e) {
+      rethrow;
+    }
   }
 
   Future<void> addOrder(List<CartItem> cart, double amount) async {
