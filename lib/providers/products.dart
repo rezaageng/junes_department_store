@@ -34,6 +34,7 @@ class Products with ChangeNotifier {
           description: product['description'],
           price: product['price'],
           image: product['image'],
+          isFavorite: product['isFavorite'],
         ));
       });
 
