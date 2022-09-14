@@ -4,7 +4,6 @@ import 'package:provider/provider.dart';
 import '../providers/product.dart';
 import '../providers/products.dart';
 import '../utilities/on_refresh.dart';
-import '../utilities/show_dialog.dart';
 import '../widgets/filter.dart';
 import '../widgets/nothing_here.dart';
 import '../widgets/product_item.dart';
@@ -22,9 +21,6 @@ class Home extends StatefulWidget {
 }
 
 class _HomeState extends State<Home> {
-  bool _isInit = true;
-  bool _isLoading = false;
-
   FilterOptions _showProducts = FilterOptions.all;
 
   void _changeFilter(FilterOptions filter) => setState(() {
@@ -32,56 +28,54 @@ class _HomeState extends State<Home> {
       });
 
   @override
-  void didChangeDependencies() async {
-    super.didChangeDependencies();
-    if (_isInit) {
-      try {
-        setState(() {
-          _isLoading = true;
-        });
-        await Provider.of<Products>(context).fetchProduct();
-      } catch (e) {
-        await showAlert(context);
-      }
-    }
-    setState(() {
-      _isLoading = false;
-    });
-    _isInit = false;
-  }
-
-  @override
   Widget build(BuildContext context) {
-    final Products products = Provider.of<Products>(context, listen: false);
-    final List<Product> filteredProducts =
-        _showProducts == FilterOptions.favorite
-            ? products.favoriteProduct
-            : products.items;
-
-    return _isLoading
-        ? const Center(
-            child: CircularProgressIndicator.adaptive(),
-          )
-        : Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.start,
+      children: [
+        Padding(
+          padding: const EdgeInsets.all(16),
+          child: Row(
             children: [
-              Padding(
-                padding: const EdgeInsets.all(16),
-                child: Row(
-                  children: [
-                    Filter(
-                      title: 'All',
-                      onTap: () => _changeFilter(FilterOptions.all),
-                    ),
-                    const SizedBox(width: 12),
-                    Filter(
-                        title: 'Favorite',
-                        onTap: () => _changeFilter(FilterOptions.favorite))
-                  ],
-                ),
+              Filter(
+                title: 'All',
+                onTap: () => _changeFilter(FilterOptions.all),
               ),
-              Expanded(
-                child: RefreshIndicator(
+              const SizedBox(width: 12),
+              Filter(
+                  title: 'Favorite',
+                  onTap: () => _changeFilter(FilterOptions.favorite))
+            ],
+          ),
+        ),
+        Expanded(
+          child: FutureBuilder(
+            future:
+                Provider.of<Products>(context, listen: false).fetchProduct(),
+            builder: (context, snapshot) {
+              final Products products =
+                  Provider.of<Products>(context, listen: false);
+              final List<Product> filteredProducts =
+                  _showProducts == FilterOptions.favorite
+                      ? products.favoriteProduct
+                      : products.items;
+
+              if (snapshot.connectionState == ConnectionState.waiting) {
+                return const Center(
+                  child: CircularProgressIndicator.adaptive(),
+                );
+              }
+              if (snapshot.error != null) {
+                Future.delayed(
+                  Duration.zero,
+                  () => ScaffoldMessenger.of(context).showSnackBar(
+                    const SnackBar(
+                      content: Text('Error fetching data'),
+                    ),
+                  ),
+                );
+              }
+              if (snapshot.connectionState == ConnectionState.done) {
+                return RefreshIndicator(
                   onRefresh: () => onRefresh(
                     context,
                     () => products.fetchProduct(),
@@ -108,9 +102,14 @@ class _HomeState extends State<Home> {
                                 child: const ProductItem(),
                               )),
                         ),
-                ),
-              ),
-            ],
-          );
+                );
+              } else {
+                return const NothingHere();
+              }
+            },
+          ),
+        ),
+      ],
+    );
   }
 }
