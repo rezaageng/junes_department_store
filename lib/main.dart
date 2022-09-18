@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/screens/auth_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'navigations/bottom_nav.dart';
@@ -38,8 +39,9 @@ class MyApp extends StatelessWidget {
         title: 'Junes',
         theme: lightTheme,
         darkTheme: darkTheme,
+        home: const AuthScreen(),
         routes: {
-          '/': (context) => const BottomNav(),
+          // '/': (context) => const BottomNav(),
           ProductDetails.routeName: (context) => const ProductDetails(),
           CartScreen.routeName: (context) => const CartScreen(),
           UserProducts.routeName: (context) => const UserProducts(),

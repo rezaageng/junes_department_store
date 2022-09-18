@@ -11,6 +11,7 @@
     "config",
     "orders",
     "user products",
-    "utils"
+    "utils",
+    "auth"
   ]
 }
