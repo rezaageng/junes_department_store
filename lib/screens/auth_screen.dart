@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 
 import '../widgets/login.dart';
+import '../widgets/sign_up.dart';
 
 enum AuthMode { login, signUp }
 
@@ -36,7 +37,7 @@ class _AuthScreenState extends State<AuthScreen> {
                 width: 240,
                 child: Column(
                   children: [
-                    const Login(),
+                    authMode == AuthMode.login ? const Login() : const SignUp(),
                     const SizedBox(height: 32),
                     Column(
                       children: [
