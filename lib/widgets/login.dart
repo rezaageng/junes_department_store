@@ -1,17 +1,32 @@
 import 'package:flutter/material.dart';
 
 class Login extends StatelessWidget {
+  final Map<String, String> authData;
+  final TextEditingController passwordController;
+
   const Login({
     Key? key,
+    required this.authData,
+    required this.passwordController,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return Column(
       children: [
-        TextField(
+        TextFormField(
+          validator: (value) {
+            if (value == null ||
+                value.isEmpty ||
+                RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
+                    .hasMatch(value)) return 'Invalid E-mail!';
+            return null;
+          },
+          onSaved: (value) => authData['email'] = value!,
+          keyboardType: TextInputType.emailAddress,
+          textInputAction: TextInputAction.next,
           decoration: InputDecoration(
-            hintText: 'username or email',
+            hintText: 'E-mail',
             filled: true,
             fillColor: Theme.of(context).cardTheme.color,
             contentPadding: const EdgeInsets.all(16),
@@ -20,12 +35,17 @@ class Login extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
-        TextField(
+        TextFormField(
+          validator: (value) {
+            if (value == null || value.isEmpty) return 'Invalid Password';
+            return null;
+          },
+          onSaved: (value) => authData['password'] = value!,
+          controller: passwordController,
           decoration: InputDecoration(
-            hintText: 'password',
+            hintText: 'Password',
             filled: true,
             fillColor: Theme.of(context).cardTheme.color,
             contentPadding: const EdgeInsets.all(16),
