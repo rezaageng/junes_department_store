@@ -40,7 +40,8 @@ class _AuthScreenState extends State<AuthScreen> {
     _formKey.currentState!.save();
 
     if (_authMode == AuthMode.login) {
-      // login handler
+      await Provider.of<Auth>(context, listen: false)
+          .login(_authData['email']!, _authData['password']!);
     } else {
       await Provider.of<Auth>(context, listen: false)
           .signup(_authData['email']!, _authData['password']!);
