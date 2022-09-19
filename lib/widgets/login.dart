@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class Login extends StatelessWidget {
   final Map<String, String> authData;
   final TextEditingController passwordController;
+  final RegExp emailRegex;
 
   const Login({
     Key? key,
     required this.authData,
     required this.passwordController,
+    required this.emailRegex,
   }) : super(key: key);
 
   @override
@@ -16,10 +18,9 @@ class Login extends StatelessWidget {
       children: [
         TextFormField(
           validator: (value) {
-            if (value == null ||
-                value.isEmpty ||
-                RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                    .hasMatch(value)) return 'Invalid E-mail!';
+            if (value == null || value.isEmpty || !emailRegex.hasMatch(value)) {
+              return 'Invalid E-mail!';
+            }
             return null;
           },
           onSaved: (value) => authData['email'] = value!,

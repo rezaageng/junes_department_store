@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 import '../widgets/login.dart';
 import '../widgets/sign_up.dart';
@@ -17,6 +19,9 @@ class AuthScreen extends StatefulWidget {
 class _AuthScreenState extends State<AuthScreen> {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
+  final _emailRegex = RegExp(
+      r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+
   final Map<String, String> _authData = {
     'email': '',
     'password': '',
@@ -25,7 +30,7 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.login;
 
-  void _submit() {
+  Future<void> _submit() async {
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -37,7 +42,8 @@ class _AuthScreenState extends State<AuthScreen> {
     if (_authMode == AuthMode.login) {
       // login handler
     } else {
-      // sign up handler
+      await Provider.of<Auth>(context, listen: false)
+          .signup(_authData['email']!, _authData['password']!);
     }
 
     setState(() {
@@ -74,10 +80,12 @@ class _AuthScreenState extends State<AuthScreen> {
                           ? Login(
                               authData: _authData,
                               passwordController: _passwordController,
+                              emailRegex: _emailRegex,
                             )
                           : SignUp(
                               authData: _authData,
                               passwordController: _passwordController,
+                              emailRegex: _emailRegex,
                             ),
                       const SizedBox(height: 32),
                       Column(

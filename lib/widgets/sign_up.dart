@@ -3,11 +3,13 @@ import 'package:flutter/material.dart';
 class SignUp extends StatelessWidget {
   final Map<String, String> authData;
   final TextEditingController passwordController;
+  final RegExp emailRegex;
 
   const SignUp({
     Key? key,
     required this.authData,
     required this.passwordController,
+    required this.emailRegex,
   }) : super(key: key);
 
   @override
@@ -16,10 +18,9 @@ class SignUp extends StatelessWidget {
       children: [
         TextFormField(
           validator: (value) {
-            if (value == null ||
-                value.isEmpty ||
-                RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$")
-                    .hasMatch(value)) return 'Invalid E-mail!';
+            if (value == null || value.isEmpty || !emailRegex.hasMatch(value)) {
+              return 'Invalid E-mail!';
+            }
             return null;
           },
           onSaved: (value) => authData['email'] = value!,
@@ -39,11 +40,15 @@ class SignUp extends StatelessWidget {
         const SizedBox(height: 16),
         TextFormField(
           validator: (value) {
-            if (value == null || value.isEmpty) return 'Invalid Password';
+            if (value == null || value.isEmpty || value.length <= 6) {
+              return 'Invalid Password';
+            }
             return null;
           },
           onSaved: (value) => authData['password'] = value!,
           controller: passwordController,
+          obscureText: true,
+          textInputAction: TextInputAction.next,
           decoration: InputDecoration(
             hintText: 'Password',
             filled: true,
@@ -54,18 +59,20 @@ class SignUp extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
         TextFormField(
           validator: (value) {
             if (value == null ||
                 value.isEmpty ||
+                value.length <= 6 ||
                 value != passwordController.text) {
               return 'Password don\'t match';
             }
             return null;
           },
+          obscureText: true,
+          textInputAction: TextInputAction.go,
           decoration: InputDecoration(
             hintText: 'Confirm Password',
             filled: true,
@@ -76,7 +83,6 @@ class SignUp extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          textInputAction: TextInputAction.go,
         ),
       ],
     );
