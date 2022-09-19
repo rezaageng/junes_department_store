@@ -54,7 +54,7 @@ class SignUp extends StatelessWidget {
               borderRadius: BorderRadius.circular(16),
             ),
           ),
-          textInputAction: TextInputAction.go,
+          textInputAction: TextInputAction.next,
         ),
         const SizedBox(height: 16),
         TextFormField(
