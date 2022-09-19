@@ -53,7 +53,7 @@ class _AuthScreenState extends State<AuthScreen> {
         physics: const BouncingScrollPhysics(),
         child: SizedBox(
           width: deviceSize.width,
-          height: deviceSize.height,
+          height: deviceSize.height - MediaQuery.of(context).viewInsets.bottom,
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
