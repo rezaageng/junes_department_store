@@ -39,7 +39,17 @@ ThemeData lightTheme = ThemeData(
         ),
       ),
       padding: MaterialStateProperty.all(const EdgeInsets.all(8)),
-      backgroundColor: MaterialStateProperty.all(Colors.green),
+      backgroundColor: MaterialStateProperty.resolveWith<Color>(
+        (Set<MaterialState> states) {
+          if (states.contains(MaterialState.pressed)) {
+            return Colors.green;
+          }
+          if (states.contains(MaterialState.disabled)) {
+            return Colors.green.withOpacity(0.5);
+          }
+          return Colors.green;
+        },
+      ),
       foregroundColor: MaterialStateProperty.all(Colors.white),
     ),
   ),
