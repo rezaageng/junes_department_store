@@ -1,7 +1,8 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/providers/auth.dart';
 import 'package:provider/provider.dart';
 
+import '../models/http_exception.dart';
+import '../providers/auth.dart';
 import '../widgets/login.dart';
 import '../widgets/sign_up.dart';
 
@@ -30,7 +31,9 @@ class _AuthScreenState extends State<AuthScreen> {
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.login;
 
-  Future<void> _submit() async {
+  Future<void> _submit(BuildContext context) async {
+    final scaffold = ScaffoldMessenger.of(context);
+
     if (!_formKey.currentState!.validate()) return;
 
     setState(() {
@@ -39,12 +42,80 @@ class _AuthScreenState extends State<AuthScreen> {
 
     _formKey.currentState!.save();
 
-    if (_authMode == AuthMode.login) {
-      await Provider.of<Auth>(context, listen: false)
-          .login(_authData['email']!, _authData['password']!);
-    } else {
-      await Provider.of<Auth>(context, listen: false)
-          .signup(_authData['email']!, _authData['password']!);
+    try {
+      if (_authMode == AuthMode.login) {
+        await Provider.of<Auth>(context, listen: false)
+            .login(_authData['email']!, _authData['password']!);
+      } else {
+        await Provider.of<Auth>(context, listen: false)
+            .signup(_authData['email']!, _authData['password']!);
+      }
+    } on HttpException catch (error) {
+      if (error.toString().contains('EMAIL_EXISTS')) {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'The email address is already in use by another account',
+            ),
+          ),
+        );
+      } else if (error.toString().contains('OPERATION_NOT_ALLOWED')) {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Password sign-in is disabled for this project.',
+            ),
+          ),
+        );
+      } else if (error.toString().contains('TOO_MANY_ATTEMPTS_TRY_LATER')) {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'We have blocked all requests from this device due to unusual activity. Try again later.',
+            ),
+          ),
+        );
+      } else if (error.toString().contains('EMAIL_NOT_FOUND')) {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'There is no user record corresponding to this identifier. The user may have been deleted.',
+            ),
+          ),
+        );
+      } else if (error.toString().contains('INVALID_PASSWORD')) {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'The password is invalid or the user does not have a password.',
+            ),
+          ),
+        );
+      } else if (error.toString().contains('USER_DISABLED')) {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'The user account has been disabled by an administrator.',
+            ),
+          ),
+        );
+      } else {
+        scaffold.showSnackBar(
+          const SnackBar(
+            content: Text(
+              'Authentication failed',
+            ),
+          ),
+        );
+      }
+    } catch (error) {
+      scaffold.showSnackBar(
+        const SnackBar(
+          content: Text(
+            'Authentication failed',
+          ),
+        ),
+      );
     }
 
     setState(() {
@@ -94,7 +165,8 @@ class _AuthScreenState extends State<AuthScreen> {
                           SizedBox(
                             width: double.infinity,
                             child: ElevatedButton(
-                              onPressed: _isLoading ? null : _submit,
+                              onPressed:
+                                  _isLoading ? null : () => _submit(context),
                               child: Row(
                                 crossAxisAlignment: CrossAxisAlignment.center,
                                 mainAxisAlignment: MainAxisAlignment.center,
