@@ -86,7 +86,7 @@ class ProductDetails extends StatelessWidget {
                     child: ElevatedButton(
                       onPressed: product.toggleFavorite,
                       style: ElevatedButton.styleFrom(
-                        primary: Theme.of(context).colorScheme.error,
+                        backgroundColor: Theme.of(context).colorScheme.error,
                       ),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.center,
