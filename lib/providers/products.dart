@@ -7,7 +7,11 @@ import '../models/http_exception.dart';
 import 'product.dart';
 
 class Products with ChangeNotifier {
+  final String? authToken;
+
   List<Product> _items = [];
+
+  Products(this.authToken, this._items);
 
   List<Product> get items => [..._items];
 
@@ -17,9 +21,8 @@ class Products with ChangeNotifier {
   Product findById(id) => _items.firstWhere((item) => item.id == id);
 
   Future<void> fetchProduct() async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products.json',
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
     );
 
     try {

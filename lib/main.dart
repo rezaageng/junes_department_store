@@ -24,34 +24,39 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MultiProvider(
-        providers: [
-          ChangeNotifierProvider(
-            create: (context) => Auth(),
+      providers: [
+        ChangeNotifierProvider(
+          create: (context) => Auth(),
+        ),
+        ChangeNotifierProxyProvider<Auth, Products>(
+          create: (context) => Products(null, []),
+          update: (context, auth, previous) => Products(
+            auth.token!,
+            previous != null ? previous.items : [],
           ),
-          ChangeNotifierProvider(
-            create: (context) => Products(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => Cart(),
-          ),
-          ChangeNotifierProvider(
-            create: (context) => Orders(),
-          )
-        ],
-        child: Consumer<Auth>(
-          builder: (context, auth, child) => MaterialApp(
-            debugShowCheckedModeBanner: false,
-            title: 'Junes',
-            theme: lightTheme,
-            darkTheme: darkTheme,
-            home: auth.isAuth ? const BottomNav() : const AuthScreen(),
-            routes: {
-              ProductDetails.routeName: (context) => const ProductDetails(),
-              CartScreen.routeName: (context) => const CartScreen(),
-              UserProducts.routeName: (context) => const UserProducts(),
-              UserProductForm.routeName: (context) => const UserProductForm(),
-            },
-          ),
-        ));
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Cart(),
+        ),
+        ChangeNotifierProvider(
+          create: (context) => Orders(),
+        )
+      ],
+      child: Consumer<Auth>(
+        builder: (context, auth, child) => MaterialApp(
+          debugShowCheckedModeBanner: false,
+          title: 'Junes',
+          theme: lightTheme,
+          darkTheme: darkTheme,
+          home: auth.isAuth ? const BottomNav() : const AuthScreen(),
+          routes: {
+            ProductDetails.routeName: (context) => const ProductDetails(),
+            CartScreen.routeName: (context) => const CartScreen(),
+            UserProducts.routeName: (context) => const UserProducts(),
+            UserProductForm.routeName: (context) => const UserProductForm(),
+          },
+        ),
+      ),
+    );
   }
 }
