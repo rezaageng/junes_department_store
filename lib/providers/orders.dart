@@ -20,16 +20,18 @@ class Order {
 }
 
 class Orders with ChangeNotifier {
+  final String? authToken;
   List<Order> _orders = [];
+
+  Orders(this.authToken, this._orders);
 
   List<Order> get orders {
     return [..._orders];
   }
 
   Future<void> fetchOrders() async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/orders.json',
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?auth=$authToken',
     );
 
     try {
@@ -67,9 +69,8 @@ class Orders with ChangeNotifier {
   }
 
   Future<void> addOrder(List<CartItem> cart, double amount) async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/orders.json',
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?auth=$authToken',
     );
     final timestamp = DateTime.now();
 

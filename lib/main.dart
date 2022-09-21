@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/navigations/bottom_nav.dart';
 import 'package:provider/provider.dart';
 
+import 'navigations/bottom_nav.dart';
 import 'providers/auth.dart';
 import 'providers/cart.dart';
 import 'providers/orders.dart';
@@ -38,8 +38,12 @@ class MyApp extends StatelessWidget {
         ChangeNotifierProvider(
           create: (context) => Cart(),
         ),
-        ChangeNotifierProvider(
-          create: (context) => Orders(),
+        ChangeNotifierProxyProvider<Auth, Orders>(
+          create: (context) => Orders(null, []),
+          update: (context, auth, previous) => Orders(
+            auth.token,
+            previous != null ? previous.orders : [],
+          ),
         )
       ],
       child: Consumer<Auth>(
