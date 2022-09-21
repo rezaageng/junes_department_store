@@ -11,19 +11,25 @@ class Products with ChangeNotifier {
   final String? userId;
 
   List<Product> _items = [];
+  List<Product> _userItems = [];
 
-  Products(this.authToken, this.userId, this._items);
+  Products(this.authToken, this.userId, this._items, this._userItems);
 
   List<Product> get items => [..._items];
+
+  List<Product> get userItems => [..._userItems];
 
   List<Product> get favoriteProduct =>
       _items.where((item) => item.isFavorite).toList();
 
   Product findById(id) => _items.firstWhere((item) => item.id == id);
 
-  Future<void> fetchProduct() async {
+  Future<void> fetchProduct([bool filter = false]) async {
+    final String filterUrl =
+        filter ? '&orderBy="userId"&equalTo="$userId"' : '';
+
     final url = Uri.parse(
-      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken$filterUrl',
     );
 
     final favUrl = Uri.parse(
@@ -50,7 +56,11 @@ class Products with ChangeNotifier {
         ));
       });
 
-      _items = loadedProduct;
+      if (filter) {
+        _userItems = loadedProduct;
+      } else {
+        _items = loadedProduct;
+      }
 
       notifyListeners();
     } catch (e) {
@@ -68,6 +78,7 @@ class Products with ChangeNotifier {
         url,
         body: json.encode(
           {
+            'userId': userId,
             'title': product.title,
             'price': product.price,
             'description': product.description,

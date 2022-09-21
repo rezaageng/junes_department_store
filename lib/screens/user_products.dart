@@ -23,29 +23,56 @@ class UserProducts extends StatelessWidget {
         ),
         title: const Text('User Products'),
       ),
-      body: RefreshIndicator(
-        onRefresh: () => onRefresh(
-          context,
-          () => Provider.of<Products>(context, listen: false).fetchProduct(),
-        ),
-        color: Theme.of(context).colorScheme.secondary,
-        child: Padding(
-          padding: const EdgeInsets.symmetric(vertical: 8),
-          child: Consumer<Products>(
-            builder: (context, products, child) => products.items.isEmpty
-                ? const NothingHere()
-                : ListView.builder(
-                    physics: const BouncingScrollPhysics(
-                        parent: AlwaysScrollableScrollPhysics()),
-                    itemCount: products.items.length,
-                    itemBuilder: (context, index) => UserProductItem(
-                      id: products.items[index].id,
-                      title: products.items[index].title,
-                      image: products.items[index].image,
-                    ),
-                  ),
-          ),
-        ),
+      body: FutureBuilder(
+        future:
+            Provider.of<Products>(context, listen: false).fetchProduct(true),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.waiting) {
+            return const Center(
+              child: CircularProgressIndicator.adaptive(),
+            );
+          }
+          if (snapshot.error != null) {
+            Future.delayed(
+              Duration.zero,
+              () => ScaffoldMessenger.of(context).showSnackBar(
+                const SnackBar(
+                  content: Text('Error fetching data'),
+                ),
+              ),
+            );
+          }
+          if (snapshot.connectionState == ConnectionState.done) {
+            return RefreshIndicator(
+              onRefresh: () => onRefresh(
+                context,
+                () => Provider.of<Products>(context, listen: false)
+                    .fetchProduct(true),
+              ),
+              color: Theme.of(context).colorScheme.secondary,
+              child: Padding(
+                padding: const EdgeInsets.symmetric(vertical: 8),
+                child: Consumer<Products>(
+                  builder: (context, products, child) =>
+                      products.userItems.isEmpty
+                          ? const NothingHere()
+                          : ListView.builder(
+                              physics: const BouncingScrollPhysics(
+                                  parent: AlwaysScrollableScrollPhysics()),
+                              itemCount: products.userItems.length,
+                              itemBuilder: (context, index) => UserProductItem(
+                                id: products.userItems[index].id,
+                                title: products.userItems[index].title,
+                                image: products.userItems[index].image,
+                              ),
+                            ),
+                ),
+              ),
+            );
+          } else {
+            return const NothingHere();
+          }
+        },
       ),
       floatingActionButton: FloatingActionButton(
         onPressed: () =>
