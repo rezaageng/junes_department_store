@@ -22,10 +22,9 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  Future<void> toggleFavorite() async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products/$id.json',
+  Future<void> toggleFavorite(String token) async {
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$token',
     );
     final oldStatus = isFavorite;
 

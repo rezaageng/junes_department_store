@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/providers/auth.dart';
 import 'package:provider/provider.dart';
 
 import '../providers/cart.dart';
@@ -18,6 +19,7 @@ class ProductDetails extends StatelessWidget {
     final Product product =
         Provider.of<Products>(context, listen: false).findById(productId);
     final Cart cart = Provider.of<Cart>(context, listen: false);
+    final Auth auth = Provider.of<Auth>(context, listen: false);
 
     return Scaffold(
       appBar: AppBar(
@@ -84,7 +86,7 @@ class ProductDetails extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: product.toggleFavorite,
+                      onPressed: () => product.toggleFavorite(auth.token!),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.error,
                       ),

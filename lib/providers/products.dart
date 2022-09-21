@@ -52,9 +52,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> addProduct(Product product) async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products.json',
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
     );
 
     try {
@@ -87,10 +86,10 @@ class Products with ChangeNotifier {
   }
 
   Future<void> updateProduct(String id, Product product) async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products/$id.json',
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken',
     );
+
     final index = _items.indexWhere((prod) => prod.id == id);
 
     await http.patch(
@@ -108,9 +107,8 @@ class Products with ChangeNotifier {
   }
 
   Future<void> deleteProduct(String id) async {
-    final url = Uri.https(
-      'junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app',
-      '/products/$id.json',
+    final url = Uri.parse(
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$authToken',
     );
 
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
