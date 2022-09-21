@@ -21,9 +21,11 @@ class Order {
 
 class Orders with ChangeNotifier {
   final String? authToken;
+  final String? userId;
+
   List<Order> _orders = [];
 
-  Orders(this.authToken, this._orders);
+  Orders(this.authToken, this.userId, this._orders);
 
   List<Order> get orders {
     return [..._orders];
@@ -31,7 +33,7 @@ class Orders with ChangeNotifier {
 
   Future<void> fetchOrders() async {
     final url = Uri.parse(
-      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?auth=$authToken',
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/orders/$userId.json?auth=$authToken',
     );
 
     try {
@@ -70,7 +72,7 @@ class Orders with ChangeNotifier {
 
   Future<void> addOrder(List<CartItem> cart, double amount) async {
     final url = Uri.parse(
-      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/orders.json?auth=$authToken',
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/orders/$userId.json?auth=$authToken',
     );
     final timestamp = DateTime.now();
 
