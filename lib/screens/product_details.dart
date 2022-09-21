@@ -86,7 +86,8 @@ class ProductDetails extends StatelessWidget {
                 children: [
                   Expanded(
                     child: ElevatedButton(
-                      onPressed: () => product.toggleFavorite(auth.token!),
+                      onPressed: () =>
+                          product.toggleFavorite(auth.token!, auth.userId!),
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Theme.of(context).colorScheme.error,
                       ),

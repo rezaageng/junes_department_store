@@ -22,9 +22,9 @@ class Product with ChangeNotifier {
     this.isFavorite = false,
   });
 
-  Future<void> toggleFavorite(String token) async {
+  Future<void> toggleFavorite(String token, String userId) async {
     final url = Uri.parse(
-      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products/$id.json?auth=$token',
+      'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId/$id.json?auth=$token',
     );
     final oldStatus = isFavorite;
 
@@ -32,11 +32,9 @@ class Product with ChangeNotifier {
     notifyListeners();
 
     try {
-      final response = await http.patch(
+      final response = await http.put(
         url,
-        body: jsonEncode({
-          'isFavorite': isFavorite,
-        }),
+        body: jsonEncode(isFavorite),
       );
 
       if (response.statusCode >= 400) {

@@ -8,10 +8,11 @@ import 'product.dart';
 
 class Products with ChangeNotifier {
   final String? authToken;
+  final String? userId;
 
   List<Product> _items = [];
 
-  Products(this.authToken, this._items);
+  Products(this.authToken, this.userId, this._items);
 
   List<Product> get items => [..._items];
 
@@ -25,12 +26,18 @@ class Products with ChangeNotifier {
       'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/products.json?auth=$authToken',
     );
 
+    final favUrl = Uri.parse(
+        'https://junes-departement-store-default-rtdb.asia-southeast1.firebasedatabase.app/userFavorites/$userId.json?auth=$authToken');
+
     try {
       final response = await http.get(url);
       final products = jsonDecode(response.body) as Map<String, dynamic>?;
       final List<Product> loadedProduct = [];
 
       if (products == null) return;
+
+      final favResponse = await http.get(favUrl);
+      final favData = jsonDecode(favResponse.body);
 
       products.forEach((id, product) {
         loadedProduct.add(Product(
@@ -39,7 +46,7 @@ class Products with ChangeNotifier {
           description: product['description'],
           price: product['price'],
           image: product['image'],
-          isFavorite: product['isFavorite'],
+          isFavorite: favData == null ? false : favData[id] ?? false,
         ));
       });
 
@@ -65,7 +72,6 @@ class Products with ChangeNotifier {
             'price': product.price,
             'description': product.description,
             'image': product.image,
-            'isFavorite': product.isFavorite,
           },
         ),
       );
