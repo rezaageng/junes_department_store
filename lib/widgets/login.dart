@@ -45,6 +45,7 @@ class Login extends StatelessWidget {
           },
           onSaved: (value) => authData['password'] = value!,
           controller: passwordController,
+          obscureText: true,
           decoration: InputDecoration(
             hintText: 'Password',
             filled: true,
