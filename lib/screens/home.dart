@@ -52,13 +52,6 @@ class _HomeState extends State<Home> {
             future:
                 Provider.of<Products>(context, listen: false).fetchProduct(),
             builder: (context, snapshot) {
-              final Products products =
-                  Provider.of<Products>(context, listen: false);
-              final List<Product> filteredProducts =
-                  _showProducts == FilterOptions.favorite
-                      ? products.favoriteProduct
-                      : products.items;
-
               if (snapshot.connectionState == ConnectionState.waiting) {
                 return const Center(
                   child: CircularProgressIndicator.adaptive(),
@@ -75,34 +68,41 @@ class _HomeState extends State<Home> {
                 );
               }
               if (snapshot.connectionState == ConnectionState.done) {
-                return RefreshIndicator(
-                  onRefresh: () => onRefresh(
-                    context,
-                    () => products.fetchProduct(),
-                  ),
-                  color: Theme.of(context).colorScheme.secondary,
-                  child: filteredProducts.isEmpty
-                      ? const NothingHere()
-                      : GridView.builder(
-                          padding: const EdgeInsets.all(16),
-                          physics: const BouncingScrollPhysics(
-                            parent: AlwaysScrollableScrollPhysics(),
+                return Consumer<Products>(builder: (context, products, child) {
+                  final List<Product> filteredProducts =
+                      _showProducts == FilterOptions.favorite
+                          ? products.favoriteProduct
+                          : products.items;
+
+                  return RefreshIndicator(
+                    onRefresh: () => onRefresh(
+                      context,
+                      () => products.fetchProduct(),
+                    ),
+                    color: Theme.of(context).colorScheme.secondary,
+                    child: filteredProducts.isEmpty
+                        ? const NothingHere()
+                        : GridView.builder(
+                            padding: const EdgeInsets.all(16),
+                            physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics(),
+                            ),
+                            gridDelegate:
+                                const SliverGridDelegateWithFixedCrossAxisCount(
+                              crossAxisCount: 2,
+                              childAspectRatio: 2 / 3,
+                              crossAxisSpacing: 16,
+                              mainAxisSpacing: 16,
+                            ),
+                            itemCount: filteredProducts.length,
+                            itemBuilder: ((context, index) =>
+                                ChangeNotifierProvider.value(
+                                  value: filteredProducts[index],
+                                  child: const ProductItem(),
+                                )),
                           ),
-                          gridDelegate:
-                              const SliverGridDelegateWithFixedCrossAxisCount(
-                            crossAxisCount: 2,
-                            childAspectRatio: 2 / 3,
-                            crossAxisSpacing: 16,
-                            mainAxisSpacing: 16,
-                          ),
-                          itemCount: filteredProducts.length,
-                          itemBuilder: ((context, index) =>
-                              ChangeNotifierProvider.value(
-                                value: filteredProducts[index],
-                                child: const ProductItem(),
-                              )),
-                        ),
-                );
+                  );
+                });
               } else {
                 return const NothingHere();
               }
