@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/providers/auth.dart';
+import 'package:provider/provider.dart';
 
 import '../screens/user_products.dart';
 
@@ -31,6 +33,15 @@ class AppDrawer extends StatelessWidget {
             enableFeedback: false,
             leading: const Icon(Icons.store_rounded),
             title: const Text('Manage Your Products'),
+          ),
+          ListTile(
+            onTap: () {
+              Provider.of<Auth>(context, listen: false).logout();
+              Scaffold.of(context).closeDrawer();
+            },
+            enableFeedback: false,
+            leading: const Icon(Icons.logout_rounded),
+            title: const Text('Log Out'),
           ),
         ],
       ),
