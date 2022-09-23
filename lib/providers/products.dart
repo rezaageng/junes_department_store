@@ -108,6 +108,7 @@ class Products with ChangeNotifier {
     );
 
     final index = _items.indexWhere((prod) => prod.id == id);
+    final userIndex = _userItems.indexWhere((prod) => prod.id == id);
 
     await http.patch(
       url,
@@ -120,6 +121,7 @@ class Products with ChangeNotifier {
     );
 
     _items[index] = product;
+    _userItems[userIndex] = product;
     notifyListeners();
   }
 

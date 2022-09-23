@@ -43,29 +43,27 @@ class UserProducts extends StatelessWidget {
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return RefreshIndicator(
-              onRefresh: () => onRefresh(
-                context,
-                () => Provider.of<Products>(context, listen: false)
-                    .fetchProduct(true),
-              ),
-              color: Theme.of(context).colorScheme.secondary,
-              child: Padding(
-                padding: const EdgeInsets.symmetric(vertical: 8),
-                child: Consumer<Products>(
-                  builder: (context, products, child) =>
-                      products.userItems.isEmpty
-                          ? const NothingHere()
-                          : ListView.builder(
-                              physics: const BouncingScrollPhysics(
-                                  parent: AlwaysScrollableScrollPhysics()),
-                              itemCount: products.userItems.length,
-                              itemBuilder: (context, index) => UserProductItem(
-                                id: products.userItems[index].id,
-                                title: products.userItems[index].title,
-                                image: products.userItems[index].image,
-                              ),
-                            ),
+            return Consumer<Products>(
+              builder: (context, products, child) => RefreshIndicator(
+                onRefresh: () => onRefresh(
+                  context,
+                  () => products.fetchProduct(true),
+                ),
+                color: Theme.of(context).colorScheme.secondary,
+                child: Padding(
+                  padding: const EdgeInsets.symmetric(vertical: 8),
+                  child: products.userItems.isEmpty
+                      ? const NothingHere()
+                      : ListView.builder(
+                          physics: const BouncingScrollPhysics(
+                              parent: AlwaysScrollableScrollPhysics()),
+                          itemCount: products.userItems.length,
+                          itemBuilder: (context, index) => UserProductItem(
+                            id: products.userItems[index].id,
+                            title: products.userItems[index].title,
+                            image: products.userItems[index].image,
+                          ),
+                        ),
                 ),
               ),
             );
