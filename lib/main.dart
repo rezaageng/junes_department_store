@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:junes_department_store/screens/auth_screen.dart';
+import 'package:junes_department_store/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'navigations/bottom_nav.dart';
@@ -6,7 +8,6 @@ import 'providers/auth.dart';
 import 'providers/cart.dart';
 import 'providers/orders.dart';
 import 'providers/products.dart';
-import 'screens/auth_screen.dart';
 import 'screens/cart_screen.dart';
 import 'screens/product_details.dart';
 import 'screens/user_product_form.dart';
@@ -55,7 +56,18 @@ class MyApp extends StatelessWidget {
           title: 'Junes',
           theme: lightTheme,
           darkTheme: darkTheme,
-          home: auth.isAuth ? const BottomNav() : const AuthScreen(),
+          home: auth.isAuth
+              ? const BottomNav()
+              : FutureBuilder(
+                  future: auth.tryAutoLogin(),
+                  builder: (context, snapshot) {
+                    if (snapshot.connectionState == ConnectionState.waiting) {
+                      return const SplashScreen();
+                    } else {
+                      return const AuthScreen();
+                    }
+                  },
+                ),
           routes: {
             ProductDetails.routeName: (context) => const ProductDetails(),
             CartScreen.routeName: (context) => const CartScreen(),
