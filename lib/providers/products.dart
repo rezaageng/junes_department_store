@@ -96,6 +96,7 @@ class Products with ChangeNotifier {
       );
 
       _items.add(newProduct);
+      _userItems.add(newProduct);
       notifyListeners();
     } catch (e) {
       rethrow;
@@ -131,19 +132,24 @@ class Products with ChangeNotifier {
     );
 
     final existingProductIndex = _items.indexWhere((prod) => prod.id == id);
+    final userProductIndex = _userItems.indexWhere((prod) => prod.id == id);
     Product? existingProduct = _items[existingProductIndex];
+    Product? userProduct = _items[userProductIndex];
 
     _items.removeAt(existingProductIndex);
+    _userItems.removeAt(userProductIndex);
     notifyListeners();
 
     final response = await http.delete(url);
 
     if (response.statusCode >= 400) {
       _items.insert(existingProductIndex, existingProduct);
+      _userItems.insert(userProductIndex, userProduct);
       notifyListeners();
       throw HttpException('Delete Failed');
     }
 
     existingProduct = null;
+    userProduct = null;
   }
 }

@@ -43,8 +43,8 @@ class UserProducts extends StatelessWidget {
             );
           }
           if (snapshot.connectionState == ConnectionState.done) {
-            return Consumer<Products>(
-              builder: (context, products, child) => RefreshIndicator(
+            return Consumer<Products>(builder: (context, products, child) {
+              return RefreshIndicator(
                 onRefresh: () => onRefresh(
                   context,
                   () => products.fetchProduct(true),
@@ -65,8 +65,8 @@ class UserProducts extends StatelessWidget {
                           ),
                         ),
                 ),
-              ),
-            );
+              );
+            });
           } else {
             return const NothingHere();
           }
