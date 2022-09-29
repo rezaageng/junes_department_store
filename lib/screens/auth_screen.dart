@@ -229,17 +229,17 @@ class _AuthScreenState extends State<AuthScreen>
                                     : 'Already have an account?',
                               ),
                               GestureDetector(
-                                onTap: () {
-                                  setState(() {
-                                    if (_authMode == AuthMode.login) {
-                                      _authMode = AuthMode.signUp;
-                                      _animationController.forward();
-                                    } else {
-                                      _authMode = AuthMode.login;
-                                      _animationController.reverse();
-                                    }
-                                  });
-                                },
+                                onTap: () => _isLoading
+                                    ? null
+                                    : setState(() {
+                                        if (_authMode == AuthMode.login) {
+                                          _authMode = AuthMode.signUp;
+                                          _animationController.forward();
+                                        } else {
+                                          _authMode = AuthMode.login;
+                                          _animationController.reverse();
+                                        }
+                                      }),
                                 child: Text(
                                   _authMode == AuthMode.login
                                       ? ' Sign Up'
