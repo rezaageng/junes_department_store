@@ -17,7 +17,8 @@ class AuthScreen extends StatefulWidget {
   State<AuthScreen> createState() => _AuthScreenState();
 }
 
-class _AuthScreenState extends State<AuthScreen> {
+class _AuthScreenState extends State<AuthScreen>
+    with SingleTickerProviderStateMixin {
   final _formKey = GlobalKey<FormState>();
   final _passwordController = TextEditingController();
   final _emailRegex = RegExp(
@@ -30,6 +31,25 @@ class _AuthScreenState extends State<AuthScreen> {
 
   bool _isLoading = false;
   AuthMode _authMode = AuthMode.login;
+
+  late final AnimationController _animationController = AnimationController(
+    vsync: this,
+    duration: const Duration(milliseconds: 300),
+  );
+
+  late final Animation<Offset> _slideAnimationLogin = Tween<Offset>(
+    begin: Offset.zero,
+    end: const Offset(1.5, 0.0),
+  ).animate(
+    CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+  );
+
+  late final Animation<Offset> _slideAnimationSignUp = Tween<Offset>(
+    begin: const Offset(-1.5, 0.0),
+    end: Offset.zero,
+  ).animate(
+    CurvedAnimation(parent: _animationController, curve: Curves.easeInOut),
+  );
 
   Future<void> _submit(BuildContext context) async {
     final scaffold = ScaffoldMessenger.of(context);
@@ -124,6 +144,12 @@ class _AuthScreenState extends State<AuthScreen> {
   }
 
   @override
+  void dispose() {
+    _animationController.dispose();
+    super.dispose();
+  }
+
+  @override
   Widget build(BuildContext context) {
     final deviceSize = MediaQuery.of(context).size;
     return Scaffold(
@@ -149,15 +175,21 @@ class _AuthScreenState extends State<AuthScreen> {
                   child: Column(
                     children: [
                       _authMode == AuthMode.login
-                          ? Login(
-                              authData: _authData,
-                              passwordController: _passwordController,
-                              emailRegex: _emailRegex,
+                          ? SlideTransition(
+                              position: _slideAnimationLogin,
+                              child: Login(
+                                authData: _authData,
+                                passwordController: _passwordController,
+                                emailRegex: _emailRegex,
+                              ),
                             )
-                          : SignUp(
-                              authData: _authData,
-                              passwordController: _passwordController,
-                              emailRegex: _emailRegex,
+                          : SlideTransition(
+                              position: _slideAnimationSignUp,
+                              child: SignUp(
+                                authData: _authData,
+                                passwordController: _passwordController,
+                                emailRegex: _emailRegex,
+                              ),
                             ),
                       const SizedBox(height: 32),
                       Column(
@@ -201,8 +233,10 @@ class _AuthScreenState extends State<AuthScreen> {
                                   setState(() {
                                     if (_authMode == AuthMode.login) {
                                       _authMode = AuthMode.signUp;
+                                      _animationController.forward();
                                     } else {
                                       _authMode = AuthMode.login;
+                                      _animationController.reverse();
                                     }
                                   });
                                 },
