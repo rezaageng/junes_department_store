@@ -12,6 +12,7 @@
     "orders",
     "user products",
     "utils",
-    "auth"
+    "auth",
+    "helpers"
   ]
 }

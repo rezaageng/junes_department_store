@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/screens/product_details.dart';
+
+import '../screens/product_details.dart';
 
 class CustomPageTransition extends PageTransitionsBuilder {
   @override
