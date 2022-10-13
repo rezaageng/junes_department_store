@@ -15,7 +15,7 @@ class OrderItem extends StatefulWidget {
 }
 
 class _OrderItemState extends State<OrderItem> {
-  bool isExpand = false;
+  bool _isExpand = false;
 
   @override
   Widget build(BuildContext context) {
@@ -37,34 +37,34 @@ class _OrderItemState extends State<OrderItem> {
             trailing: IconButton(
               onPressed: () {
                 setState(() {
-                  isExpand = !isExpand;
+                  _isExpand = !_isExpand;
                 });
               },
               enableFeedback: false,
               icon: Icon(
-                isExpand
+                _isExpand
                     ? Icons.expand_less_rounded
                     : Icons.expand_more_rounded,
               ),
             ),
           ),
-          if (isExpand)
-            SizedBox(
-              height: min(widget.order.products.length * 20, 240),
-              child: ListView.builder(
-                physics: const BouncingScrollPhysics(),
-                itemCount: widget.order.products.length,
-                itemBuilder: (context, index) => Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    Text(widget.order.products[index].title),
-                    Text(
-                      '${widget.order.products[index].price} x ${widget.order.products[index].quantity}',
-                    )
-                  ],
-                ),
+          AnimatedContainer(
+            duration: const Duration(milliseconds: 100),
+            height: _isExpand ? min(widget.order.products.length * 20, 240) : 0,
+            child: ListView.builder(
+              physics: const BouncingScrollPhysics(),
+              itemCount: widget.order.products.length,
+              itemBuilder: (context, index) => Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Text(widget.order.products[index].title),
+                  Text(
+                    '${widget.order.products[index].price} x ${widget.order.products[index].quantity}',
+                  )
+                ],
               ),
-            )
+            ),
+          )
         ],
       ),
     );
