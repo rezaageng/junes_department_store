@@ -1,6 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/screens/auth_screen.dart';
-import 'package:junes_department_store/screens/splash_screen.dart';
 import 'package:provider/provider.dart';
 
 import 'navigations/bottom_nav.dart';
@@ -8,8 +6,10 @@ import 'providers/auth.dart';
 import 'providers/cart.dart';
 import 'providers/orders.dart';
 import 'providers/products.dart';
+import 'screens/auth_screen.dart';
 import 'screens/cart_screen.dart';
 import 'screens/product_details.dart';
+import 'screens/splash_screen.dart';
 import 'screens/user_product_form.dart';
 import 'screens/user_products.dart';
 import 'themes/dark_theme.dart';

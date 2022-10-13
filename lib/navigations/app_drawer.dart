@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:junes_department_store/providers/auth.dart';
 import 'package:provider/provider.dart';
 
+import '../providers/auth.dart';
 import '../screens/user_products.dart';
 
 class AppDrawer extends StatelessWidget {
