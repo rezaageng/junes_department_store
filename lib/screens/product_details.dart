@@ -42,9 +42,12 @@ class ProductDetails extends StatelessWidget {
                     margin: const EdgeInsets.only(bottom: 8),
                     child: AspectRatio(
                       aspectRatio: 1,
-                      child: Image.network(
-                        product.image,
-                        fit: BoxFit.cover,
+                      child: Hero(
+                        tag: product.id,
+                        child: Image.network(
+                          product.image,
+                          fit: BoxFit.cover,
+                        ),
                       ),
                     ),
                   ),

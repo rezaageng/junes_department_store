@@ -91,9 +91,12 @@ class ProductItem extends StatelessWidget {
             ),
             child: Container(
               color: Theme.of(context).cardTheme.color,
-              child: Image.network(
-                product.image,
-                fit: BoxFit.cover,
+              child: Hero(
+                tag: product.id,
+                child: Image.network(
+                  product.image,
+                  fit: BoxFit.cover,
+                ),
               ),
             ),
           ),
