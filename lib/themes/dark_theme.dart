@@ -2,6 +2,10 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 
 ThemeData darkTheme = ThemeData(
+  // pageTransitionsTheme: PageTransitionsTheme(builders: {
+  //   TargetPlatform.android: CustomPageTransition(),
+  //   TargetPlatform.iOS: CustomPageTransition(),
+  // }),
   colorScheme: const ColorScheme.dark(
       primary: Color.fromRGBO(18, 18, 18, 1), secondary: Colors.orange),
   appBarTheme: const AppBarTheme(
