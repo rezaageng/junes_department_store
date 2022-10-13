@@ -178,6 +178,7 @@ class _AuthScreenState extends State<AuthScreen>
                           ? SlideTransition(
                               position: _slideAnimationLogin,
                               child: Login(
+                                key: const ValueKey('login_widget'),
                                 authData: _authData,
                                 passwordController: _passwordController,
                                 emailRegex: _emailRegex,
@@ -186,6 +187,7 @@ class _AuthScreenState extends State<AuthScreen>
                           : SlideTransition(
                               position: _slideAnimationSignUp,
                               child: SignUp(
+                                key: const ValueKey('signup_widget'),
                                 authData: _authData,
                                 passwordController: _passwordController,
                                 emailRegex: _emailRegex,
@@ -229,17 +231,23 @@ class _AuthScreenState extends State<AuthScreen>
                                     : 'Already have an account?',
                               ),
                               GestureDetector(
-                                onTap: () => _isLoading
-                                    ? null
-                                    : setState(() {
-                                        if (_authMode == AuthMode.login) {
-                                          _authMode = AuthMode.signUp;
-                                          _animationController.forward();
-                                        } else {
-                                          _authMode = AuthMode.login;
-                                          _animationController.reverse();
-                                        }
-                                      }),
+                                onTap: () async {
+                                  if (!_isLoading &&
+                                      _authMode == AuthMode.login) {
+                                    setState(() {
+                                      _authMode = AuthMode.signUp;
+                                      _animationController.forward();
+                                    });
+                                  } else if (!_isLoading &&
+                                      _authMode == AuthMode.signUp) {
+                                    setState(() {
+                                      _authMode = AuthMode.login;
+                                      _animationController.reverse();
+                                    });
+                                  } else {
+                                    null;
+                                  }
+                                },
                                 child: Text(
                                   _authMode == AuthMode.login
                                       ? ' Sign Up'
